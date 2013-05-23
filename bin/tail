@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+min_release = "2.0.0"
+abort "tail requires Ruby version #{min_release} or greater.\nUpgrade and try again." if RUBY_VERSION < min_release
+
+$:.unshift File.expand_path("../../lib",__FILE__)
+
+require 'unix_rb'
+
+begin
+  options = UnixRb::TailOptions.new(ARGV)
+rescue UnixRb::MissingFileError => e
+  puts e.message
+  exit 1
+end
+
+puts UnixRb::Tail.new(options.values).run
