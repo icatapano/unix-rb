@@ -46,6 +46,13 @@ module UnixRb
         t.run.should eq "line\n"*10
         f.unlink
       end
+
+      it "works with stdin" do
+        fake_stdin("line\n"*14) do
+          t = Tail.new({ input: $stdin })
+          t.run.should eq "line\n"*10
+        end
+      end
     end
   end
 end
